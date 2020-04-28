@@ -13,7 +13,7 @@ import com.wpcursos.course.entities.User;
 // faz parte da camada de Controladores REST
 
 @RestController
-@RequestMapping (value = "/users", method= RequestMethod.GET)
+@RequestMapping (value = "/users")
 @ResponseBody
 public class UserResource {
 
