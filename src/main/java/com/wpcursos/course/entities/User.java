@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table (name="tb_user") // Da um nome pra tabela a ser criada
+@Table(name = "tb_user") // Da um nome pra tabela a ser criada
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,11 +27,12 @@ public class User implements Serializable {
 	private String phone;
 	private String password;
 
-	@OneToMany(mappedBy="client") // Como esta mapeado o atributo do outro lado, em Order
-	
+	@JsonIgnore // Evita o loop quando temos referencia . ex. cliente-> pedido, pedido->
+				// cliente. A biblioteca Jacson
+				// é responsável pela serialização do JSON.
+	@OneToMany(mappedBy = "client") // Como esta mapeado o atributo do outro lado, em Order
+
 	private List<Order> orders = new ArrayList<>();
-	
-	
 
 	public User() {
 
@@ -84,12 +87,9 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-		
 	public List<Order> getOrders() {
 		return orders;
 	}
-
-	
 
 	@Override
 	public int hashCode() {
