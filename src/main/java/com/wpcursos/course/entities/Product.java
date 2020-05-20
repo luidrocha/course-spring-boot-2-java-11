@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -24,10 +27,16 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 
-	// Interface Set foi usado para garantir que não haja duplicação na categoria.
-	// HashSet<>() classe correspondente
-	@Transient // impede o JPA de interpretar
-	private Set<Category> categoria = new HashSet<>(); // Instanciada para garantir que não seja iniciada Nulla.
+	/*Interface Set foi usado para garantir que não haja duplicação na categoria.
+	 HashSet<>() classe correspondente
+	 @Transient impede o JPA de interpretar */
+	
+	// Cria a tabela de associação entre produto x categoria 
+	@ManyToMany
+	@JoinTable(name="tb_product_category", joinColumns = @JoinColumn(name="product_id"),
+	inverseJoinColumns = @JoinColumn(name="category_id"))
+	
+	private Set<Category> categories = new HashSet<>(); // Instanciada para garantir que não seja iniciada Nulla.
 
 	public Product() {
 
@@ -83,7 +92,7 @@ public class Product implements Serializable {
 	}
 
 	public Set<Category> getCategoria() {
-		return categoria;
+		return categories;
 	}
 
 	@Override

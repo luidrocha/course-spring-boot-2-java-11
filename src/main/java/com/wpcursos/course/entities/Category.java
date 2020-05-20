@@ -8,36 +8,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table (name="tb_category")
+@Table(name = "tb_category")
 public class Category implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-	
-	@Transient
+	@JsonIgnore // Evita o loop do JSON, acontece pq a associacao e muito-muitos
+	@ManyToMany(mappedBy = "categories") // "categories") Coleção definida na entidade Product
 	private Set<Product> products = new HashSet<>();
-	
+
 	public Category() {
-		
+
 	}
-	
-	
 
 	public Category(Long id, String name) {
-		
+
 		this.id = id;
 		this.name = name;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -54,12 +52,10 @@ public class Category implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Set<Product> getProducts() {
 		return products;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -68,8 +64,6 @@ public class Category implements Serializable {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
-
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -85,10 +79,4 @@ public class Category implements Serializable {
 		return true;
 	}
 
-
-	}
-	
-	
-	
-	
-
+}
