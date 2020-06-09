@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wpcursos.course.entities.pk.OrderItemPK;
 
 @Entity
@@ -14,8 +15,8 @@ public class OrderItem implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	@EmbeddedId
-	private OrderItemPK id;  // classe Id composto
+	@EmbeddedId //criar uma classe interna/aninhada e incluir uma referência a ela na classe original.
+	private OrderItemPK id = new OrderItemPK(); // classe Id composto
 
 	private Integer quantity;
 
@@ -49,6 +50,7 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	@JsonIgnore
 	public Order getOrder() {
 		
 		return id.getOrder();
