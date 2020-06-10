@@ -50,6 +50,7 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	// Na plataforma java interprise o que vale é o GET, onde deve ser colocado o JSONIGNORE pra associação de mão dupla.
 	@JsonIgnore
 	public Order getOrder() {
 		
@@ -61,6 +62,7 @@ public class OrderItem implements Serializable{
 		id.setOrder(order);
 	}
 	
+	//@JsonIgnore
 	public Product getProduct() {
 		
 		return id.getProduct();
