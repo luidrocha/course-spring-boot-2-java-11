@@ -72,6 +72,11 @@ public class OrderItem implements Serializable{
 		
 		id.setProduct(product);
 	}
+	// pra aparecer no json na plataforma java ee tem que ter o get
+	public Double getSubTotal() {
+		
+		return price * quantity;
+	}
 	
 
 	@Override
