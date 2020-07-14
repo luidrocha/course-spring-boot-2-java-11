@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,47 +34,54 @@ public class UserResource {
 	public ResponseEntity<List<User>> findAll() {
 
 		List<User> list = service.findAll();
-		
 
 		return ResponseEntity.ok().body(list);
 
 	}
 
 	// Permite passa o parametro para requisição, nesse caso o id.
-	
-	@GetMapping (value ="/{id}")
-	public ResponseEntity<User>	findById(@PathVariable long id){ // Essa anotação@PathVariable informa que o metodo vai receberum parametro por requisição
-		
+
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<User> findById(@PathVariable long id) { // Essa anotação@PathVariable informa que o metodo vai
+																	// receberum parametro por requisição
+
 		User obj = service.findById(id);
-		
+
 		return ResponseEntity.ok().body(obj);
-			
+
 	}
-	
-	
+
 	// Insere um recurso (dados) no banco de dados
 	@PostMapping // Define que a solicitação vai receber uma requisição POST do metodo HTTP
-				 // @RequestBody para descerializar
-	public ResponseEntity<User> insertUser(@RequestBody User obj){ 
-		
+					// @RequestBody para descerializar
+	public ResponseEntity<User> insertUser(@RequestBody User obj) {
+
 		obj = service.insertUser(obj);
-		
+
 		// Pega o caminho do objeto JSON e transforma em um omj do tipo Uri.
-		URI uri =  ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		
-		return ResponseEntity.created(uri).body(obj);		
-		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+
+		return ResponseEntity.created(uri).body(obj);
+
 	}
-	
-	@DeleteMapping (value = "/{id}")
-	public ResponseEntity<Void> deleteUser (@PathVariable Long id) {
-		
-		
+
+	// padrão Rest para eclusão de informação.
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+
 		service.deleteUser(id);
-		
+
 		return ResponseEntity.noContent().build(); // Resposta vazia, sem corpo. 204.
-				
-		
+
+	}
+	// Padrão rest para atualizar informação.
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj) {
+
+		obj = service.updateUser(id, obj);
+
+		return ResponseEntity.ok().body(obj);
 	}
 
 }

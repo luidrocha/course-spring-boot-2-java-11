@@ -27,21 +27,40 @@ public class UserService {
 	}
 
 	public User findById(Long id) {
-		
-		Optional<User> obj  = repository.findById(id);
-		
+
+		Optional<User> obj = repository.findById(id);
+
 		return obj.get();
 	}
-	
+
 	public User insertUser(User obj) {
-		
-					
+
 		return repository.save(obj);
 	}
-	
-	public void deleteUser (Long id) {
-		
+
+	// Deleta Usuário 
+	public void deleteUser(Long id) {
+
 		repository.deleteById(id);
+
+	}
+
+	// Atualiza o usuário 
+	
+	public User updateUser(Long id, User obj) {
+
+		User entity = repository.getOne(id); // prepara o obj monitorado para depois executar uma ação, não vai no banco
+												// de dados.
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	// Atualiza usuário
+	private void updateData(User entity, User obj) {
+		
+	 entity.setName(obj.getName());
+	 entity.setEmail(obj.getEmail());
+	 entity.setPhone(obj.getPhone());
 		
 	}
 
